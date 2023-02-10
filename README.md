@@ -8,4 +8,4 @@ Repositorio para las prácticas y laboratorios de la asignatura Redes de Ordenad
   - ***ld_addressing*** - contiene los diagramas y topología de red diseñados para esta parte de la práctica.
   - ***scripts*** - contiene los scripts para la asignación de direcciones y enrutamiento de la red.
 
-> Nótese que los scripts están en formato .txt puesto que se diseñaron fuera de la VM donde había que ejecutar el laboratorio.
+> Nótese que los scripts están en formato .txt puesto que se diseñaron fuera de la VM donde había que ejecutar el laboratorio y luego se pegaron en la máquina virtual.
