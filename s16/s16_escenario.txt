@@ -1,0 +1,165 @@
+S16_rysca ip configuration:
+
+RA {
+  eth0.0: 10.0.65.1/24
+  eth0.1: 10.0.0.1/30
+}
+PCA {
+  eth1: 10.0.65.32/24
+}
+
+RB {
+  eth0.0: 10.0.66.1/24
+  eth0.1: 10.0.0.2/30
+}
+PCB {
+  eth1: 10.0.66.32/24
+}
+
+--------------------------------------------------------------------------------------------------
+
+-------------------
+INITIATION SCRIPTS:
+-------------------
+
+RA_clean.sh {
+configure terminal
+
+interface eth0.0
+no ip address 192.168.0.1/24
+quit
+
+interface eth0.1
+no ip address 192.168.1.1/24
+quit
+
+interface eth0.2
+no ip address 192.168.2.1/24
+quit
+
+interface eth0.3
+no ip address 192.168.3.1/24
+quit
+
+interface eth0.4
+no ip address 192.168.4.1/24
+quit
+
+interface wlan0
+no ip address 192.168.5.1/24
+quit
+
+exit
+}
+
+RB_clean.sh {
+configure terminal
+
+interface eth0.0
+no ip address 192.168.0.1/24
+quit
+
+interface eth0.1
+no ip address 192.168.1.1/24
+quit
+
+interface eth0.2
+no ip address 192.168.2.1/24
+quit
+
+interface eth0.3
+no ip address 192.168.3.1/24
+quit
+
+interface eth0.4
+no ip address 192.168.4.1/24
+quit
+
+interface wlan0
+no ip address 192.168.5.1/24
+quit
+
+exit
+}
+
+-----------------------
+IP ASSIGNATION SCRIPTS:
+-----------------------
+
+RA_addressing.sh {
+  configure terminal
+
+  interface eth0.0
+  ip address 10.0.65.1/24
+  quit
+
+  interface eth0.1
+  ip address 10.0.0.1/30
+  quit
+
+  exit
+}
+
+RB_addressing.sh {
+  configure terminal
+
+  interface eth0.0
+  ip address 10.0.66.1/24
+  quit
+
+  interface eth0.1
+  ip address 10.0.0.2/30
+  quit
+
+  exit
+}
+
+PCA_assign.sh {
+sudo ip addr add 10.0.65.32/24 dev eth1
+}
+
+PCB_assign.sh {
+sudo ip addr add 10.0.66.32/24 dev eth1
+}
+
+----------------
+ROUTING SCRIPTS:
+----------------
+SUBNETS:
+A (10.0.65.0/24)
+B (10.0.66.0/24)
+X (10.0.0.0/30)
+
+RA_routing.sh {
+configure terminal
+
+ip route 10.0.65.0/24 10.0.65.1
+ip route 10.0.66.0/24 10.0.0.2
+ip route 10.0.0.0/30 10.0.0.1
+
+exit
+}
+
+RB_routing.sh {
+configure terminal
+
+ip route 10.0.65.0/24 10.0.0.1
+ip route 10.0.66.0/24 10.0.66.1
+ip route 10.0.0.0/30 10.0.0.2
+
+exit
+}
+
+PCA_routing.sh {
+sudo ip route add default via 10.0.65.1
+
+#sudo ip route add 10.0.0.0/30 via 10.0.65.1
+#sudo ip route add 10.0.66.0/24 via 10.0.65.1
+}
+
+PCB_routing.sh {
+sudo ip route add default via 10.0.66.1
+
+#sudo ip route add 10.0.0.0/30 via 10.0.66.1
+#sudo ip route add 10.0.65.0/24 via 10.0.66.1
+}

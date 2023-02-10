@@ -1,0 +1,6 @@
+# IP addressing of host in Office 1
+sudo ip address del 192.100.100.1/24 dev eth1
+sudo ip address add 10.0.46.2/25 dev eth1
+
+# Routing entries for this host
+sudo ip route add default via 10.0.46.1

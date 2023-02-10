@@ -1,0 +1,231 @@
+####################################
+Subnet Office 1 (10.0.46.0/25) 
+    R1(eth0.1):     10.0.46.1/25 
+    hstOfi1(eth1):  10.0.46.2/25
+Subnet Office 2 (10.0.46.128/27)
+    R2(eth0.1):     10.0.46.129/27
+    hstOfi2(eth1):  10.0.46.130/27
+Subnet Servers  (10.0.46.160/28)
+    R3(eth0.1):     10.0.46.161/28
+Subnet 12       (10.0.46.176/30)
+    R1(eth0.3):     10.0.46.177/30
+    R2(eth0.2):     10.0.46.178/30
+Subnet 13       (10.0.46.184/30)
+    R1(eth0.2):     10.0.46.185/30
+    R3(eth0.3):     10.0.46.186/30
+Subnet 23       (10.0.46.180/30)
+    R2(eth0.3):     10.0.46.181/30
+    R3(eth0.4):     10.0.46.182/30
+Subnet 34       (10.0.46.188/30)
+    R3(eth0.2):     10.0.46.189/30
+    R4(eth0.2):     10.0.46.190/30
+###################################
+###################################
+R1:
+    eth0.1: 10.0.46.1
+    eth0.2: 10.0.46.185
+    eth0.3: 10.0.46.177
+R2:
+    eth0.1: 10.0.46.129
+    eth0.2: 10.0.46.178
+    eth0.3: 10.0.46.181
+R3: 
+    eth0.1: 10.0.46.161
+    eth0.2: 10.0.46.189
+    eth0.3: 10.0.46.186
+    eth0.4: 10.0.46.182
+R4:
+    eth0.1: 10.0.0.1
+    eth0.2: 10.0.46.190
+hstOfi1:
+    eth1: 10.0.46.2
+hstOfi2:
+    eth1: 10.0.46.130
+###################################
+
+###################################
+- For specific milestone 2: Static Routing
+- For specific milestone 3 and 4: RIP config
+
+Routers_cleanup_script {
+# Resetting interfaces in the router
+configure terminal
+interface eth0.0
+no ip address 192.168.0.1/24
+quit
+interface eth0.1
+no ip address 192.168.1.1/24
+quit
+interface eth0.2
+no ip address 192.168.2.1/24
+quit
+interface eth0.3
+no ip address 192.168.3.1/24
+quit
+interface eth0.4
+no ip address 192.168.4.1/24
+quit
+interface wlan0
+no ip address 192.168.5.1/24
+quit
+exit
+}
+
+R1_script {
+
+# IP addressing in router 1
+configure terminal
+interface eth0.1
+ip address 10.0.46.1/25
+quit
+interface eth0.2
+ip address 10.0.46.185/30
+quit
+interface eth0.3
+ip address 10.0.46.177/30
+quit
+exit
+
+#####################################
+#            MILESTONE 2            #
+#####################################
+# Routes in router 1
+configure terminal
+# to Oficinas 2 subnet
+ip route 10.0.46.128/27 10.0.46.178 1
+ip route 10.0.46.128/27 10.0.46.186 2
+# to servers subnet
+ip route 10.0.46.160/28 10.0.46.186 1
+ip route 10.0.46.160/28 10.0.46.178 2
+# to subnet 23
+ip route 10.0.46.180/30 10.0.46.178 1
+ip route 10.0.46.180/30 10.0.46.186 1
+# to subnet 34
+ip route 10.0.46.188/30 10.0.46.186 1
+ip route 10.0.46.188/30 10.0.46.178 2
+exit
+#####################################
+}
+
+R2_script {
+
+# IP addressing in router 2
+configure terminal
+interface eth0.1
+ip address 10.0.46.129/27
+quit
+interface eth0.2
+ip address 10.0.46.178/30
+quit
+interface eth0.3
+ip address 10.0.46.181/30
+quit
+exit
+
+#####################################
+#            MILESTONE 2            #
+#####################################
+# Routes in router 2
+configure terminal
+# to Oficinas 1 subnet
+ip route 10.0.46.0/25 10.0.46.177 1
+ip route 10.0.46.0/25 10.0.46.182 2
+# to Servers subnet
+ip route 10.0.46.160/28 10.0.46.182 1
+ip route 10.0.46.160/28 10.0.46.177 2
+# to subnet 13
+ip route 10.0.46.184/30 10.0.46.177 1
+ip route 10.0.46.184/30 10.0.46.182 1
+# to subnet 34
+ip route 10.0.46.188/30 10.0.46.182 1
+ip route 10.0.46.188/30 10.0.46.177 2
+exit
+#####################################
+}
+
+R3_script {
+
+# IP addressing router 3
+configure terminal
+interface eth0.1
+ip address 10.0.46.161/28
+quit
+interface eth0.3
+ip address 10.0.46.186/30
+quit
+interface eth0.4
+ip address 10.0.46.182/30
+quit
+interface eth0.2
+ip address 10.0.46.189/30
+quit
+exit
+
+#####################################
+#            MILESTONE 2            #
+#####################################
+# Routes in router 3
+configure terminal
+# to Oficinas 1 subnet
+ip route 10.0.46.0/25 10.0.46.185 1
+ip route 10.0.46.0/25 10.0.46.181 2
+# to Oficinas 2 subnet
+ip route 10.0.46.128/27 10.0.46.181 1
+ip route 10.0.46.128/27 10.0.46.185 2
+# to subnet 12
+ip route 10.0.46.176/30 10.0.46.185 1
+ip route 10.0.46.176/30 10.0.46.181 1
+exit
+#####################################
+}
+
+R4_script {
+
+# IP addressing in router 4
+configure terminal
+interface eth0.2
+ip address 10.0.46.190/30
+quit
+interface eth0.1
+ip address 10.0.0.1/24
+quit
+exit
+
+#####################################
+#            MILESTONE 2            #
+#####################################
+# Routes in router 4
+configure terminal
+# to Oficinas 1 subnet
+ip route 10.0.46.0/25 10.0.46.189
+# to Oficinas 2 subnet
+ip route 10.0.46.128/27 10.0.46.189
+# to Servers subnet
+ip route 10.0.46.160/28 10.0.46.189
+# to subnet 12
+ip route 10.0.46.176/30 10.0.46.189
+# to subnet 13
+ip route 10.0.46.184/30 10.0.46.189
+# to subnet 23
+ip route 10.0.46.180/30 10.0.46.189
+exit
+#####################################
+}
+
+hstOfi1_script {
+# IP addressing of host in Office 1
+sudo ip address del 192.100.100.1/24 dev eth1
+sudo ip address add 10.0.46.2/25 dev eth1
+
+# Routing entries for this host
+sudo ip route add default via 10.0.46.1
+}
+
+hstOfi2_script {
+# IP addressing of host in Office 2
+sudo ip address del 192.100.100.3/24 dev eth1
+sudo ip address add 10.0.46.130/27 dev eth1
+
+# Routing entries for this host
+sudo ip route add default via 10.0.46.129
+}

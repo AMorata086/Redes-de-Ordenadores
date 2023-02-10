@@ -1,0 +1,54 @@
+# Resetting interfaces in the router
+configure terminal
+interface eth0.0
+no ip address 192.168.0.1/24
+quit
+interface eth0.1
+no ip address 192.168.1.1/24
+quit
+interface eth0.2
+no ip address 192.168.2.1/24
+quit
+interface eth0.3
+no ip address 192.168.3.1/24
+quit
+interface eth0.4
+no ip address 192.168.4.1/24
+quit
+interface wlan0
+no ip address 192.168.5.1/24
+quit
+exit
+
+# IP addressing in router 2
+configure terminal
+interface eth0.1
+ip address 10.0.46.129/27
+quit
+interface eth0.2
+ip address 10.0.46.178/30
+quit
+interface eth0.3
+ip address 10.0.46.181/30
+quit
+exit
+
+#####################################
+#            MILESTONE 2            #
+#####################################
+# Routes in router 2
+configure terminal
+# to Oficinas 1 subnet
+ip route 10.0.46.0/25 10.0.46.177 1
+ip route 10.0.46.0/25 10.0.46.182 2
+# to Servers subnet
+ip route 10.0.46.160/28 10.0.46.182 1
+ip route 10.0.46.160/28 10.0.46.177 2
+# to subnet 13
+ip route 10.0.46.184/30 10.0.46.177 1
+ip route 10.0.46.184/30 10.0.46.182 1
+# to subnet 34
+ip route 10.0.46.188/30 10.0.46.182 1
+ip route 10.0.46.188/30 10.0.46.177 2
+exit
+#####################################
