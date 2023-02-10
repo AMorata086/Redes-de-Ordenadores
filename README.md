@@ -7,3 +7,5 @@ Repositorio para las prácticas y laboratorios de la asignatura Redes de Ordenad
 - ***Parte 2: p_encam_a*** - contiene dos directorios correspondientes al diseño e implementación de la Parte II de la práctica (véase el esquema incluido en el fichero **p_encam_a.pdf**).
   - ***ld_addressing*** - contiene los diagramas y topología de red diseñados para esta parte de la práctica.
   - ***scripts*** - contiene los scripts para la asignación de direcciones y enrutamiento de la red.
+
+> Nótese que los scripts están en formato .txt puesto que se diseñaron fuera de la VM donde había que ejecutar el laboratorio.
